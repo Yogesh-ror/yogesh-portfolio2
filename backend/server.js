@@ -6,16 +6,32 @@ const contactRoutes = require("./routes/contact");
 const adminRoutes = require("./routes/admin");
 
 const app = express();
+const allowedOrigins = (process.env.FRONTEND_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || /^http:\/\/localhost:\d+$/.test(origin)) {
-      return callback(null, true);
-    }
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
+      }
 
-    return callback(new Error("Origin not allowed by CORS"));
-  },
-}));
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      if (/^https?:\/\/localhost:\d+$/.test(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Origin not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.use(express.json());
 
 app.use("/api/contact", contactRoutes);

@@ -22,23 +22,36 @@ function Contact() {
     setSubmitMessage("Sending your message...");
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/contact`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-      const result = await response.json();
+      const apiUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, "");
 
-      if (!response.ok) {
-        throw new Error(result.message || "Unable to send your message.");
+      if (!apiUrl) {
+        throw new Error("Contact service is not configured.");
       }
 
-      setSubmitMessage(result.message);
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const responseText = await response.text();
+      const contentType = response.headers.get("content-type") || "";
+      let result = null;
+
+      if (contentType.includes("application/json") && responseText) {
+        result = JSON.parse(responseText);
+      } else if (!response.ok) {
+        throw new Error(
+          `Contact service returned an unexpected response (${response.status}).`,
+        );
+      }
+
+      if (!response.ok) {
+        throw new Error(result?.message || "Unable to send your message.");
+      }
+
+      setSubmitMessage(result?.message || "Your message has been sent successfully!");
       setFormData({
         name: "",
         email: "",

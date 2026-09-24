@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --text: #a6b4c3;
+  --text-h: #f5f7f2;
+  --bg: #08131a;
+  --surface: #10232b;
+  --surface-strong: #142d36;
+  --border: rgba(173, 229, 218, 0.16);
+  --code-bg: #10232b;
+  --accent: #62e6d1;
+  --accent-warm: #ff9278;
+  --accent-bg: rgba(98, 230, 209, 0.12);
+  --accent-border: rgba(98, 230, 209, 0.55);
+  --social-bg: rgba(20, 45, 54, 0.8);
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+
+  --sans: 'DM Sans', 'Segoe UI', sans-serif;
+  --heading: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(98, 230, 209, 0.13), transparent 28rem),
+    radial-gradient(circle at 88% 18%, rgba(255, 146, 120, 0.1), transparent 24rem),
+    var(--bg);
+  font-family: var(--sans);
+}
+
+#root {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid rgba(173, 229, 218, 0.08);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  color: #08131a;
+  background: var(--accent);
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}

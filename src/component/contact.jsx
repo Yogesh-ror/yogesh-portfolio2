@@ -23,14 +23,14 @@ function Contact() {
 
     try {
       const response = await fetch(
-        "https://yogesh-portfolio-backend.onrender.com/api/contact",
+        `${import.meta.env.VITE_API_URL}/api/contact`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
       const result = await response.json();
 
@@ -46,25 +46,25 @@ function Contact() {
         message: "",
       });
     } catch (error) {
-      setSubmitMessage(error.message || "Unable to send your message. Please try again.");
+      setSubmitMessage(
+        error.message || "Unable to send your message. Please try again.",
+      );
     }
   };
 
   return (
     <div className="contact-page">
       <div className="container py-5">
-
         {/* Heading */}
         <div className="text-center mb-5">
           <h1 className="contact-title">Contact Me</h1>
           <p className="contact-subtitle">
-            Have a question, project idea, or need help? Feel free to send me
-            a message.
+            Have a question, project idea, or need help? Feel free to send me a
+            message.
           </p>
         </div>
 
         <div className="row justify-content-center">
-
           {/* Contact Information */}
           <div className="col-lg-4 mb-4">
             <div className="contact-info">
@@ -104,19 +104,15 @@ function Contact() {
           {/* Contact Form */}
           <div className="col-lg-7">
             <div className="contact-form-card">
-
               <h2>Send Me a Message</h2>
               <p className="form-description">
                 Fill out the form below and send me your query.
               </p>
 
               <form onSubmit={handleSubmit}>
-
                 {/* Name */}
                 <div className="mb-3">
-                  <label className="form-label">
-                    Your Name
-                  </label>
+                  <label className="form-label">Your Name</label>
 
                   <input
                     type="text"
@@ -131,9 +127,7 @@ function Contact() {
 
                 {/* Email */}
                 <div className="mb-3">
-                  <label className="form-label">
-                    Email Address
-                  </label>
+                  <label className="form-label">Email Address</label>
 
                   <input
                     type="email"
@@ -148,9 +142,7 @@ function Contact() {
 
                 {/* Subject */}
                 <div className="mb-3">
-                  <label className="form-label">
-                    Subject
-                  </label>
+                  <label className="form-label">Subject</label>
 
                   <input
                     type="text"
@@ -165,9 +157,7 @@ function Contact() {
 
                 {/* Message */}
                 <div className="mb-4">
-                  <label className="form-label">
-                    Your Query
-                  </label>
+                  <label className="form-label">Your Query</label>
 
                   <textarea
                     name="message"
@@ -190,11 +180,9 @@ function Contact() {
                     {submitMessage}
                   </p>
                 )}
-
               </form>
             </div>
           </div>
-
         </div>
       </div>
     </div>

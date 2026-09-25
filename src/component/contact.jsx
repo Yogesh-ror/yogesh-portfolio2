@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import "./contact.css";
 
@@ -8,7 +9,9 @@ function Contact() {
     subject: "",
     message: "",
   });
+
   const [submitMessage, setSubmitMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,42 +22,32 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
     setSubmitMessage("Sending your message...");
 
     try {
-      const apiUrl = (
-        import.meta.env.VITE_API_URL ||
-        "https://yogesh-portfolio-backend.onrender.com"
-      ).replace(/\/$/, "");
+      const response = await fetch(
+        "https://yogesh-portfolio-backend.onrender.com/api/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      if (!apiUrl) {
-        throw new Error("Contact service is not configured.");
-      }
-
-      const response = await fetch(`${apiUrl}/api/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const responseText = await response.text();
-      const contentType = response.headers.get("content-type") || "";
-      let result = null;
-
-      if (contentType.includes("application/json") && responseText) {
-        result = JSON.parse(responseText);
-      } else if (!response.ok) {
-        throw new Error(
-          `Contact service returned an unexpected response (${response.status}).`,
-        );
-      }
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result?.message || "Unable to send your message.");
+        throw new Error(result.message || "Unable to send your message.");
       }
 
-      setSubmitMessage(result?.message || "Your message has been sent successfully!");
+      setSubmitMessage(
+        result.message || "Your message has been sent successfully!"
+      );
+
       setFormData({
         name: "",
         email: "",
@@ -62,18 +55,23 @@ function Contact() {
         message: "",
       });
     } catch (error) {
+      console.error("Contact form error:", error);
+
       setSubmitMessage(
-        error.message || "Unable to send your message. Please try again.",
+        error.message || "Unable to send your message. Please try again."
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="contact-page">
       <div className="container py-5">
-        {/* Heading */}
+
         <div className="text-center mb-5">
           <h1 className="contact-title">Contact Me</h1>
+
           <p className="contact-subtitle">
             Have a question, project idea, or need help? Feel free to send me a
             message.
@@ -81,7 +79,7 @@ function Contact() {
         </div>
 
         <div className="row justify-content-center">
-          {/* Contact Information */}
+
           <div className="col-lg-4 mb-4">
             <div className="contact-info">
               <h2>Let's Connect</h2>
@@ -93,6 +91,7 @@ function Contact() {
 
               <div className="info-item">
                 <span>📧</span>
+
                 <div>
                   <h5>Email</h5>
                   <p>yogeshkhanchi985@gmail.com</p>
@@ -101,6 +100,7 @@ function Contact() {
 
               <div className="info-item">
                 <span>📍</span>
+
                 <div>
                   <h5>Location</h5>
                   <p>Panipat, Haryana, India</p>
@@ -109,6 +109,7 @@ function Contact() {
 
               <div className="info-item">
                 <span>💻</span>
+
                 <div>
                   <h5>Available For</h5>
                   <p>Projects & Freelance Work</p>
@@ -117,16 +118,17 @@ function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <div className="col-lg-7">
             <div className="contact-form-card">
+
               <h2>Send Me a Message</h2>
+
               <p className="form-description">
                 Fill out the form below and send me your query.
               </p>
 
               <form onSubmit={handleSubmit}>
-                {/* Name */}
+
                 <div className="mb-3">
                   <label className="form-label">Your Name</label>
 
@@ -141,7 +143,6 @@ function Contact() {
                   />
                 </div>
 
-                {/* Email */}
                 <div className="mb-3">
                   <label className="form-label">Email Address</label>
 
@@ -156,7 +157,6 @@ function Contact() {
                   />
                 </div>
 
-                {/* Subject */}
                 <div className="mb-3">
                   <label className="form-label">Subject</label>
 
@@ -171,7 +171,6 @@ function Contact() {
                   />
                 </div>
 
-                {/* Message */}
                 <div className="mb-4">
                   <label className="form-label">Your Query</label>
 
@@ -186,9 +185,14 @@ function Contact() {
                   ></textarea>
                 </div>
 
-                {/* Submit */}
-                <button type="submit" className="btn send-btn">
-                  Send Message 🚀
+                <button
+                  type="submit"
+                  className="btn send-btn"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? "Sending..."
+                    : "Send Message 🚀"}
                 </button>
 
                 {submitMessage && (
@@ -196,9 +200,11 @@ function Contact() {
                     {submitMessage}
                   </p>
                 )}
+
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -206,3 +212,4 @@ function Contact() {
 }
 
 export default Contact;
+

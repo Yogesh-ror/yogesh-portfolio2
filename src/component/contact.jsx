@@ -22,7 +22,10 @@ function Contact() {
     setSubmitMessage("Sending your message...");
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, "");
+      const apiUrl = (
+        import.meta.env.VITE_API_URL ||
+        "https://yogesh-portfolio-backend.onrender.com"
+      ).replace(/\/$/, "");
 
       if (!apiUrl) {
         throw new Error("Contact service is not configured.");

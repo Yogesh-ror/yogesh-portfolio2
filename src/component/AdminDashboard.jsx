@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./admin.css";
 
 const tokenKey = "portfolio_admin_token";
+const apiUrl = (import.meta.env.VITE_API_URL || "https://yogesh-portfolio-backend.onrender.com").replace(/\/$/, "");
 
 function AdminDashboard() {
   const [token, setToken] = useState(() => sessionStorage.getItem(tokenKey));
@@ -22,7 +23,7 @@ function AdminDashboard() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/admin/contacts", {
+      const response = await fetch(`${apiUrl}/api/admin/contacts`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const result = await response.json();
@@ -51,7 +52,7 @@ function AdminDashboard() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/admin/login", {
+      const response = await fetch(`${apiUrl}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -73,7 +74,7 @@ function AdminDashboard() {
     if (!window.confirm("Delete this contact request?")) return;
 
     try {
-      const response = await fetch(`/api/admin/contacts/${id}`, {
+      const response = await fetch(`${apiUrl}/api/admin/contacts/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

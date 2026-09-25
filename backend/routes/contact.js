@@ -12,32 +12,31 @@ router.get("/", (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message } = req.body || {};
+    const contactData = {
+      name: typeof name === "string" ? name.trim() : "",
+      email: typeof email === "string" ? email.trim() : "",
+      subject: typeof subject === "string" ? subject.trim() : "",
+      message: typeof message === "string" ? message.trim() : "",
+    };
 
-    if (!name || !email || !subject || !message) {
+    if (Object.values(contactData).some((value) => !value)) {
       return res.status(400).json({
         success: false,
         message: "Please fill all fields",
       });
     }
 
-    const newContact = new Contact({
-      name,
-      email,
-      subject,
-      message,
-    });
+    await Contact.create(contactData);
 
-    await newContact.save();
-
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Your message has been sent successfully!",
     });
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error",
     });

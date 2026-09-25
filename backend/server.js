@@ -78,13 +78,12 @@ app.use("/api/admin", adminRoutes);
 // ===============================
 // Home Route
 // ===============================
-app.get("/", (req, res) => {
-  res.status(200).json({
+app.get("/api/contact-test", (req, res) => {
+  res.json({
     success: true,
-    message: "Yogesh Portfolio Backend is running!",
+    message: "Contact API route is working from server.js"
   });
 });
-
 // ===============================
 // 404 Route
 // ===============================

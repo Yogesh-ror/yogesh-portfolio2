@@ -3,6 +3,13 @@ const router = express.Router();
 
 const Contact = require("../contact");
 
+router.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Contact endpoint is running. Send contact forms with POST.",
+  });
+});
+
 router.post("/", async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;

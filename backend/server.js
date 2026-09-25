@@ -14,6 +14,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://yogesh-portfolio2-jfinuxjv9-yogesh-7e65.vercel.app",
   "https://yogesh-portfolio2-ipox6mb1z-yogesh-7e65.vercel.app",
+  "https://yogesh-portfolio2-git-main-yogesh-7e65.vercel.app",
 ];
 
 app.use(
